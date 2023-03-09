@@ -1,4 +1,5 @@
 
+
 #include <iostream>
 #include <bits/stdc++.h>
 
@@ -18,7 +19,7 @@ int main()
         cout << "Извините, но у нас только 3 типа аккаунта выберите один из них! " << endl << endl;
         goto start;
     }
-    
+    signin:
     //login page
     string login, password;
     if(a == 1){
@@ -42,6 +43,24 @@ int main()
         cout << "password: ";
         cin >> password;
     }
+    
+    
+    //login data check
+    int pass = 0;  // integer for login and password check
+    if(login == "saleshoro" and password == "shorosale123"){
+        pass++;
+    }
+    if(login == "deliveryshoro" and  password == "shorodelivery123"){
+        pass++;
+    }
+    if(login == "providershoro" and password == "shoroprovider123"){
+        pass++;
+    }
+    if(pass == 0){
+        cout << "Извините, неверный login или password" << endl;
+        goto signin;
+    }
+    
     
     return 0;
 }
