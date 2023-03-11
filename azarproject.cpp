@@ -4,17 +4,50 @@
 #include <bits/stdc++.h>
 
 using namespace std;
+struct Azar{
+    string name;
+    string date;
+};
 
 int main()
 {
+    //producst for searching
+    Azar array[6];
+    if(1 < 2){
+        array[0].name = "Максым";
+        array[1].name = "Аралаш";
+        array[2].name = "Тан";
+        array[3].name = "Чалап";
+        array[4].name = "Жарма";
+        array[5].name = "Бозо";
+        array[0].date = "01.11.2022";
+        array[1].date = "01.03.2023";
+        array[2].date = "11.02.2023";
+        array[3].date = "30.01.2023";
+        array[4].date = "09.01.2023";
+        array[5].date = "10.03.2023";
+    }
+    
     //Menu for saleman by array
     string salemenu[] = {
-    "1. Показать весь список товаров для продажи",
-    "2. Искать товар",
-    "3. Показать отчет по продаже",
-    "4. Сделать заказ отсутствующего товара",
-    "5. Удалить заказ",
-    "6. Выход"
+        "1. Показать весь список товаров для продажи",
+        "2. Искать товар",
+        "3. Показать отчет по продаже",
+        "4. Сделать заказ отсутствующего товара",
+        "5. Удалить заказ",
+        "6. Выход"
+    };
+    
+    
+    //Menu for Deliveryman by array
+    string deliveryMenu[] = {
+        "1. Показать список товаров для доставки ",
+        "2. Показать доставленные заказы",
+        "3. Доставить заказ:",
+        "4. Показать количество доставленных товаров",
+        "5. Показать количество заказанных товаров",
+        "6. Показать мой заработок ",
+        "7. Выход"
     };
     
     
@@ -54,16 +87,15 @@ int main()
     cin >> password;
 
 
-
     //login data check
     int pass = 0;  // integer for login and password check
-    if(login == "saleshoro" and password == "shorosale123"){
+    if(login == "saleshoro" and password == "shorosale123" and a == 1){
         pass++;
     }
-    if(login == "deliveryshoro" and  password == "shorodelivery123"){
+    if(login == "deliveryshoro" and  password == "shorodelivery123" and a == 2){
         pass++;
     }
-    if(login == "providershoro" and password == "shoroprovider123"){
+    if(login == "providershoro" and password == "shoroprovider123" and a == 3){
         pass++;
     }
     if(pass == 0){
@@ -71,11 +103,14 @@ int main()
         goto signin;
     }
     
-    int menunumber;
+    
     //menu for saleman
+    int menunumber;
+    
     if(a == 1){
         cout << endl << "Приветствую дорогой, Продавец!" << endl;
         while(1 < 2){
+            cout << endl << "Menu:" << endl;
             for(auto now: salemenu){
                 cout << now << endl;
             }
@@ -111,12 +146,22 @@ int main()
                     string search;
                     cout << endl << "Напишите название товара для поиска: ";
                     cin >> search;
+                    for(auto now : array){
+                        if(search == now.name){
+                            cout << "Результаты поиска: " << now.name << " " << now.date << endl << endl;
+                        }
+                    }
                     
                 }
                 if(temp == 2){
                     string search;
                     cout << endl << "Напишите дату для поиска: ";
                     cin >> search;
+                    for(auto now : array){
+                        if(search == now.date){
+                            cout << "Результаты поиска: " << now.name << " " << now.date << endl << endl;
+                        }
+                    }
                     
                 }
                 if(temp != 1 and temp != 2){
@@ -191,6 +236,132 @@ int main()
                 rename("temp.txt", "solt.txt");
             }
             
+        }
+    }
+    
+    //Menu for Deliveryman
+    if(a == 2){
+        
+        cout << "Приветствую дорогой, Доставщик!";
+        while(1 < 2){
+            cout << endl << "Menu:" << endl;
+            for(auto now: deliveryMenu){
+                cout << now << endl;
+            }
+            cout << "Пожалуйста наберите номер меню для работы с программой, если закончили, то наберите 7: ";
+            cin >> menunumber;
+            cout << endl << "Вы выбрали пункт: " << deliveryMenu[menunumber - 1] << endl;
+            
+            if(menunumber == 7){
+                cout << endl << "Программа завершена, мы будем рады вашему возвращению!";
+                return 0;
+            }
+            if(menunumber == 1){
+                string solt;
+                ifstream solts("solt.txt");
+                if (!solts.is_open()) {
+                    cout << "Нам еще не пришло список оборудований для доставки !" << endl;
+                } else {
+                    cout << "Cписок товаров для доставки: " << endl;
+                    while (getline(solts, solt)) {
+                        cout << solt << endl;
+                    }
+                    solts.close();
+                }
+                cout << endl << endl;
+            }
+            if(menunumber == 2){
+                string delivered;
+                ifstream delivereds("delivered.txt");
+                if (!delivereds.is_open()) {
+                    cout << "Нет доставленных товаров !" << endl;
+                } else {
+                    cout << "Cписок доставленных товаров: " << endl;
+                    while (getline(delivereds, delivered)) {
+                        cout << delivered << endl;
+                    }
+                    delivereds.close();
+                }
+                cout << endl << endl;
+            }
+            if(menunumber == 3){
+                string zakaz;
+                cout << "Какой заказ был доставлен? : ";
+                cin >> zakaz;
+                string sale;
+                ifstream sales("sale.txt");
+                ofstream temps("temp.txt");
+                while (getline(sales, sale)) {
+                    if(zakaz == sale){
+                        continue;
+                    }
+                    temps << sale << endl;
+                }
+                sales.close();
+                temps.close();
+                remove("sale.txt");
+                rename("temp.txt", "sale.txt");
+                ifstream delivereds("delivered.txt");
+                ofstream tempes("tempes.txt");
+                string tempus;
+                while(getline(delivereds, tempus)){
+                    tempes << tempus << endl;
+                }
+                tempes << zakaz << endl;
+                delivereds.close();
+                tempes.close();
+                remove("delivered.txt");
+                rename("tempes.txt", "delivered.txt");
+                
+                cout << endl << endl;
+            }
+            if(menunumber == 4){
+                string delivered;
+                int count = 0;
+                ifstream delivereds("delivered.txt");
+                if (!delivereds.is_open()) {
+                    cout << "Нет доставленных товаров !" << endl;
+                } else {
+                    while (getline(delivereds, delivered)) {
+                        count++;
+                    }
+                    cout << "Kоличество доставленных товаров: " << count;
+                    delivereds.close();
+                }
+                cout << endl << endl;
+            }
+            if(menunumber == 5){
+                string solt;
+                int count = 0;
+                ifstream solts("solt.txt");
+                if (!solts.is_open()) {
+                    cout << "Нам еще не пришло список оборудований для доставки !" << endl;
+                } else {
+                    while (getline(solts, solt)) {
+                        count++;
+                    }
+                    cout << "Kоличество заказанных товаров: " << count;
+                    solts.close();
+                }
+                cout << endl << endl;
+            }
+            if(menunumber == 6){
+                string delivered;
+                int count = 0, stavka;
+                cout << "Сколько вы получаете за каждую доставку ?: ";
+                cin >> stavka;
+                ifstream delivereds("delivered.txt");
+                if (!delivereds.is_open()) {
+                    cout << "Нет доставленных товаров !" << endl;
+                } else {
+                    while (getline(delivereds, delivered)) {
+                        count++;
+                    }
+                    cout << "Вы заработали: " << count * stavka  << "сомов";
+                    delivereds.close();
+                }
+                cout << endl << endl;
+            }
         }
     }
     
