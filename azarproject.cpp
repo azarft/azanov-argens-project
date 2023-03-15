@@ -4,6 +4,10 @@
 #include <bits/stdc++.h>
 
 using namespace std;
+struct Orders{
+    string order;
+    int oquantity;
+};
 struct Azar{
     string name;
     string date;
@@ -11,9 +15,23 @@ struct Azar{
 
 int main()
 {
+    Orders array1[6];
+    array1[0].order = "Максым";
+    array1[1].order = "Аралаш";
+    array1[2].order = "Тан";
+    array1[3].order = "Чалап";
+    array1[4].order = "Жарма";
+    array1[5].order = "Бозо";
+    array1[0].oquantity = 50;
+    array1[1].oquantity = 40;
+    array1[2].oquantity = 60;
+    array1[3].oquantity = 90;
+    array1[4].oquantity = 85;
+    array1[5].oquantity = 70;
+    
+    
     //producst for searching
     Azar array[6];
-    if(1 < 2){
         array[0].name = "Максым";
         array[1].name = "Аралаш";
         array[2].name = "Тан";
@@ -26,7 +44,6 @@ int main()
         array[3].date = "30.01.2023";
         array[4].date = "09.01.2023";
         array[5].date = "10.03.2023";
-    }
     
     //Menu for saleman by array
     string salemenu[] = {
@@ -50,22 +67,42 @@ int main()
         "7. Выход"
     };
     
+    //Menu for Provider by array
+    string providermenu[] = {
+        "1. Показать список товаров для поставки ",
+        "2. Показать количество поставляемого товара",
+        "3. Показать товар с самым большим количеством заказов для доставки",
+        "4. Показать товар с самым меньшим количеством заказов для доставки",
+        "5. Выход"
+    };
     
-    //choosing accaunt type 
-    start: cout << "Типы аккаунтов: " << endl << "1.Saleman" << endl << "2.Deliveryman" << endl << "3.Provider" << endl << endl;
-    cout << "Для запуска программы, пожалуйста выберите тип аккаунта(напишите порядковый номер): ";
-    int a; 
-    cin >> a;
-    
-    
-    //answer for wrong accaunt type
-    if(a > 3 or 1 > a){
-        cout << "Извините, но у нас только 3 типа аккаунта выберите один из них! " << endl << endl;
-        goto start;
+    int a;
+    int checking = 1;
+    while (checking <= 1) {
+        cout << "Типы аккаунтов: " << endl << "1. Saleman" << endl << "2. Deliveryman" << endl << "3. Provider" << endl << endl;
+        cout << "Для запуска программы, пожалуйста выберите тип аккаунта (напишите порядковый номер): ";
+        
+        if (cin >> a) { // Check if input is an integer
+            switch (a) {
+                case 1:
+                case 2:
+                case 3:
+                    // Valid input, exit the loop
+                    checking++;
+                    break;
+                default:
+                    cout << "Извините, но у нас только 3 типа аккаунта выберите один из них! " << endl << endl;
+                    cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            }
+        } else { // Input is not an integer
+            cout << "Извините, введенное значение не является числом! " << endl << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
     }
 
     //login page
-    signin:
     string login, password;
     switch (a) {
     case 1:
@@ -81,26 +118,26 @@ int main()
         cout << endl << "Неверный ввод." << endl << endl;
         break;
     }
-    cout << "Login: ";
-    cin >> login;
-    cout << "password: ";
-    cin >> password;
 
 
-    //login data check
-    int pass = 0;  // integer for login and password check
-    if(login == "saleshoro" and password == "shorosale123" and a == 1){
-        pass++;
-    }
-    if(login == "deliveryshoro" and  password == "shorodelivery123" and a == 2){
-        pass++;
-    }
-    if(login == "providershoro" and password == "shoroprovider123" and a == 3){
-        pass++;
-    }
-    if(pass == 0){
-        cout << "Извините, неверный login или password" << endl;
-        goto signin;
+
+    while (true) {
+        cout << "Login: ";
+        cin >> login;
+        cout << "password: ";
+        cin >> password;
+        if (login == "saleshoro" and password == "shorosale123" and a == 1) {
+            break;
+        }
+        else if (login == "deliveryshoro" and password == "shorodelivery123" and a == 2) {
+            break;
+        }
+        else if (login == "providershoro" and password == "shoroprovider123" and a == 3) {
+            break;
+        }
+        else {
+            cout << "Извините, неверный login или password" << endl;
+        }
     }
     
     
@@ -116,7 +153,11 @@ int main()
             }
             
             cout << "Пожалуйста наберите номер меню для работы с программой, если закончили, то наберите 6: ";
-            cin >> menunumber;
+            while (!(cin >> menunumber) || menunumber < 1 || menunumber > 6) {
+                cout << "Ошибка: пожалуйста, введите число от 1 до 6: ";
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            }
             cout << endl << "Вы выбрали пункт: " << salemenu[menunumber - 1] << endl;
         
             if(menunumber == 6){
@@ -136,35 +177,40 @@ int main()
                 }
                 cout << endl << endl;
             }
-            if(menunumber == 2){
-                searching: cout << "Выберите как вы хотите искать товар: " << endl;
+            if (menunumber == 2) {
+                searching: 
+                cout << "Выберите как вы хотите искать товар: " << endl;
                 cout << "1. По названию " << endl << "2. По дате" << endl; 
                 cout << "Для выбора напишите порядковый номер: ";
                 int temp;
-                cin >> temp;
-                if(temp == 1){
+                while(!(cin >> temp)) { // check for invalid input (non-integer)
+                    cin.clear(); // clear error flag
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // ignore invalid input
+                    cout << "Некорректный ввод. Пожалуйста, введите целое число: "; // ask again for integer input
+                }
+                if (temp == 1) {
                     string search;
                     cout << endl << "Напишите название товара для поиска: ";
                     cin >> search;
-                    for(auto now : array){
-                        if(search == now.name){
+                    for (auto now : array) {
+                        if (search == now.name) {
                             cout << "Результаты поиска: " << now.name << " " << now.date << endl << endl;
                         }
                     }
-                    
                 }
-                if(temp == 2){
+                else if (temp == 2) {
                     string search;
                     cout << endl << "Напишите дату для поиска: ";
                     cin >> search;
-                    for(auto now : array){
-                        if(search == now.date){
+                    for (auto now : array) {
+                        if (search == now.date) {
                             cout << "Результаты поиска: " << now.name << " " << now.date << endl << endl;
                         }
                     }
-                    
                 }
-                if(temp != 1 and temp != 2){
+                else {
+                    cout << "У нас есть только 2 типа поиска выберите один из них!" << endl;
+                    
                     goto searching;
                 }
             }
@@ -249,7 +295,11 @@ int main()
                 cout << now << endl;
             }
             cout << "Пожалуйста наберите номер меню для работы с программой, если закончили, то наберите 7: ";
-            cin >> menunumber;
+            while (!(cin >> menunumber) || menunumber < 1 || menunumber > 7) {
+                cout << "Ошибка: пожалуйста, введите число от 1 до 7: ";
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            }
             cout << endl << "Вы выбрали пункт: " << deliveryMenu[menunumber - 1] << endl;
             
             if(menunumber == 7){
@@ -361,6 +411,88 @@ int main()
                     delivereds.close();
                 }
                 cout << endl << endl;
+            }
+        }
+    }
+    if(a == 3){
+        cout << "Приветствую дорогой, Поставщик!";
+        while(1 < 2){
+            cout << endl << "Menu:" << endl;
+            for(auto now: providermenu){
+                cout << now << endl;
+            }
+            cout << "Пожалуйста наберите номер меню для работы с программой, если закончили, то наберите 5: ";
+            
+            while (!(cin >> menunumber) || menunumber < 1 || menunumber > 5) {
+                cout << "Ошибка: пожалуйста, введите число от 1 до 5: ";
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            }
+            cout << endl << "Вы выбрали пункт: " << providermenu[menunumber - 1] << endl;
+            if(menunumber == 1){
+                string need;
+                ifstream needs("need_material.txt");
+                if (!needs.is_open()) {
+                    cout << "Нам еще не пришло список товаров для поставки !" << endl;
+                } else {
+                    cout << "Список товаров для поставки : " << endl;
+                    while (getline(needs, need)) {
+                        cout << need << endl;
+                    }
+                    needs.close();
+                }
+                cout << endl << endl;
+            }
+            else if(menunumber == 2){
+                string need;
+                int count = 0;
+                ifstream needs("need_material.txt");
+                if (!needs.is_open()) {
+                    cout << "Нам еще не пришло список товаров для поставки !" << endl;
+                } else {
+                    
+                    while (getline(needs, need)) {
+                        count++;
+                    }
+                    needs.close();
+                }
+                cout << "Количество поставляемого товара : " << count << endl;
+                cout << endl << endl;
+            }
+            else if(menunumber == 3){
+                int max = 0;
+                for(auto now: array1){
+                    if(now.oquantity > max){
+                        max = now.oquantity;
+                    }
+                }
+                for(auto now: array1){
+                    if(now.oquantity == max){
+                        cout << "Товар с самым большим количеством заказов для доставки: " << now.order << " " << now.oquantity << "заказов" <<endl;
+                    }
+                }
+                cout << endl << endl;
+            }
+            else if(menunumber == 4){
+                int min = 100;
+                for(auto now: array1){
+                    if(now.oquantity < min){
+                        min = now.oquantity;
+                    }
+                }
+                for(auto now: array1){
+                    if(now.oquantity == min){
+                        cout << "Товар с самым меньшим количеством заказов : " << now.order << " " << now.oquantity << "заказов" << endl;
+                    }
+                }
+                cout << endl << endl;
+            }
+            else if(menunumber == 5){
+                cout << endl << "Программа завершена, мы будем рады вашему возвращению!";
+                return 0;
+            }
+            else{
+                cout << "Извините но в меню только 5 пунктов, выберите один из них! " << endl;
             }
         }
     }
