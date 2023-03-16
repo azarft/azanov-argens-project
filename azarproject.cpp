@@ -15,36 +15,26 @@ struct Azar{
 
 int main()
 {
-    Orders array1[6];
-    array1[0].order = "Максым";
-    array1[1].order = "Аралаш";
-    array1[2].order = "Тан";
-    array1[3].order = "Чалап";
-    array1[4].order = "Жарма";
-    array1[5].order = "Бозо";
-    array1[0].oquantity = 50;
-    array1[1].oquantity = 40;
-    array1[2].oquantity = 60;
-    array1[3].oquantity = 90;
-    array1[4].oquantity = 85;
-    array1[5].oquantity = 70;
-    
+    //Orders to search max and min
+    Orders array1[6] = {
+        {"Максым", 50},
+        {"Аралаш", 40},
+        {"Тан", 60},
+        {"Чалап", 90},
+        {"Жарма", 85},
+        {"Бозо", 70}
+    };
     
     //producst for searching
-    Azar array[6];
-        array[0].name = "Максым";
-        array[1].name = "Аралаш";
-        array[2].name = "Тан";
-        array[3].name = "Чалап";
-        array[4].name = "Жарма";
-        array[5].name = "Бозо";
-        array[0].date = "01.11.2022";
-        array[1].date = "01.03.2023";
-        array[2].date = "11.02.2023";
-        array[3].date = "30.01.2023";
-        array[4].date = "09.01.2023";
-        array[5].date = "10.03.2023";
-    
+    Azar array[6] = {
+        {"Максым", "01.11.2022"},
+        {"Аралаш", "01.03.2023"},
+        {"Тан", "11.02.2023"},
+        {"Чалап", "30.01.2023"},
+        {"Жарма", "09.01.2023"},
+        {"Бозо", "10.03.2023"}
+    };
+        
     //Menu for saleman by array
     string salemenu[] = {
         "1. Показать весь список товаров для продажи",
@@ -82,12 +72,11 @@ int main()
         cout << "Типы аккаунтов: " << endl << "1. Saleman" << endl << "2. Deliveryman" << endl << "3. Provider" << endl << endl;
         cout << "Для запуска программы, пожалуйста выберите тип аккаунта (напишите порядковый номер): ";
         
-        if (cin >> a) { // Check if input is an integer
+        if (cin >> a) {
             switch (a) {
                 case 1:
                 case 2:
                 case 3:
-                    // Valid input, exit the loop
                     checking++;
                     break;
                 default:
@@ -95,7 +84,7 @@ int main()
                     cin.clear();
                     cin.ignore(numeric_limits<streamsize>::max(), '\n');
             }
-        } else { // Input is not an integer
+        } else { 
             cout << "Извините, введенное значение не является числом! " << endl << endl;
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -141,12 +130,12 @@ int main()
     }
     
     
-    //menu for saleman
     int menunumber;
     
+    //Menu for saleman
     if(a == 1){
         cout << endl << "Приветствую дорогой, Продавец!" << endl;
-        while(1 < 2){
+        while(true){
             cout << endl << "Menu:" << endl;
             for(auto now: salemenu){
                 cout << now << endl;
@@ -160,10 +149,13 @@ int main()
             }
             cout << endl << "Вы выбрали пункт: " << salemenu[menunumber - 1] << endl;
         
+        
             if(menunumber == 6){
                 cout << endl << "Программа завершена, мы будем рады вашему возвращению!";
                 return 0;
             }
+            
+            
             if (menunumber == 1) {
                 string sale;
                 ifstream sales("sale.txt");
@@ -177,6 +169,8 @@ int main()
                 }
                 cout << endl << endl;
             }
+            
+            
             if (menunumber == 2) {
                 searching: 
                 cout << "Выберите как вы хотите искать товар: " << endl;
@@ -192,20 +186,30 @@ int main()
                     string search;
                     cout << endl << "Напишите название товара для поиска: ";
                     cin >> search;
+                    bool checker = true;
                     for (auto now : array) {
                         if (search == now.name) {
+                            checker = false;
                             cout << "Результаты поиска: " << now.name << " " << now.date << endl << endl;
                         }
+                    }
+                    if(checker = true){
+                        cout << "Не удалось найти такой товар!" << endl << endl;
                     }
                 }
                 else if (temp == 2) {
                     string search;
                     cout << endl << "Напишите дату для поиска: ";
                     cin >> search;
+                    bool checker = true;
                     for (auto now : array) {
                         if (search == now.date) {
                             cout << "Результаты поиска: " << now.name << " " << now.date << endl << endl;
+                            checker = false;
                         }
+                    }
+                    if(checker = true){
+                        cout << "Не удалось найти такой товар!" << endl << endl;
                     }
                 }
                 else {
@@ -214,6 +218,8 @@ int main()
                     goto searching;
                 }
             }
+            
+            
             if (menunumber == 3) {
                 string solt;
                 ifstream solts("solt.txt");
@@ -227,25 +233,72 @@ int main()
                 }
                 cout << endl << endl;
             }
-            if(menunumber == 4){
-                string missproduct;
-                ifstream missings("missitem.txt");
-                if (!missings.is_open()) {
-                    cout << "Отсутствующих товаров нет" << endl;
-                } else {
-                    cout << endl << "Список отсутствующих товаров: " << endl;
-                    while (getline(missings, missproduct)) {
-                        cout << missproduct << endl;
-                    }
-                    missings.close();
-                    int quantity, product;
-                    cout << "Пожалуйста напишите какой отстустующий товар вы хотите заказать(напишите порядковый номер): ";
-                    cin >> product;
-                    cout << "Пожалуйста напишите сколько таких товаров вы хотите заказать: ";
-                    cin >> quantity;
+            
+            
+            if (menunumber == 4) {
+              string missproduct;
+              int count = 0;
+              ifstream missings("missitem.txt");
+              if (!missings.is_open()) {
+                cout << "Отсутствующих товаров нет" << endl;
+              } else {
+                cout << endl << "Список отсутствующих товаров: " << endl;
+                while (getline(missings, missproduct)) {
+                  cout << ++count << ". " << missproduct << endl; // use prefix increment to start counting from 1
                 }
-                cout << endl << endl;
+                missings.close();
+                int product, quantity; // reorder variable declarations
+                productPoint:
+                cout << "Пожалуйста, введите порядковый номер отсутствующего товара, который вы хотите заказать: ";
+                while (!(cin >> product) || product <= 0 || product > count) { // add bounds check and use logical OR
+                  cout << "Ошибка!! Введенное вами данные некорректны." << endl;
+                  cin.clear();
+                  cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                  goto productPoint;
+                }
+                quantityPoint:
+                cout << "Пожалуйста, введите количество товаров, которое вы хотите заказать: ";
+                while (!(cin >> quantity) || quantity <= 0) { // add bounds check
+                  cout << "Ошибка!! Введенное вами данные некорректны." << endl;
+                  cin.clear();
+                  cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                  goto quantityPoint;
+                }
+                // update missitem.txt
+                ifstream missings("missitem.txt");
+                ofstream temps("tempmiss.txt");
+                int missItemInt = 1;
+                string kerek;
+                while (getline(missings, missproduct)) {
+                  if (missItemInt == product) {
+                    kerek = missproduct;
+                    missItemInt++;
+                    continue;
+                    
+                  }
+                  temps << missproduct << endl;
+                  missItemInt++;
+                }
+                missings.close();
+                temps.close();
+                remove("missitem.txt");
+                rename("tempmiss.txt", "missitem.txt");
+                // update need_materials.txt
+                ifstream need("need_material.txt");
+                ofstream temps2("temp2.txt");
+                while (getline(need, missproduct)) {
+                  temps2 << missproduct << endl;
+                }
+                temps2 << kerek << " " << quantity << endl;
+                need.close();
+                temps2.close();
+                remove("need_material.txt");
+                rename("temp2.txt", "need_material.txt");
+              }
+              cout << endl << endl;
             }
+            
+            
             if(menunumber == 5){
                 string solt;
                 ifstream solts("solt.txt");
@@ -289,7 +342,7 @@ int main()
     if(a == 2){
         
         cout << "Приветствую дорогой, Доставщик!";
-        while(1 < 2){
+        while(true){
             cout << endl << "Menu:" << endl;
             for(auto now: deliveryMenu){
                 cout << now << endl;
@@ -302,10 +355,13 @@ int main()
             }
             cout << endl << "Вы выбрали пункт: " << deliveryMenu[menunumber - 1] << endl;
             
+            
             if(menunumber == 7){
                 cout << endl << "Программа завершена, мы будем рады вашему возвращению!";
                 return 0;
             }
+            
+            
             if(menunumber == 1){
                 string solt;
                 ifstream solts("solt.txt");
@@ -320,6 +376,8 @@ int main()
                 }
                 cout << endl << endl;
             }
+            
+            
             if(menunumber == 2){
                 string delivered;
                 ifstream delivereds("delivered.txt");
@@ -334,6 +392,8 @@ int main()
                 }
                 cout << endl << endl;
             }
+            
+            
             if(menunumber == 3){
                 string zakaz;
                 cout << "Какой заказ был доставлен? : ";
@@ -365,6 +425,8 @@ int main()
                 
                 cout << endl << endl;
             }
+            
+            
             if(menunumber == 4){
                 string delivered;
                 int count = 0;
@@ -380,6 +442,8 @@ int main()
                 }
                 cout << endl << endl;
             }
+            
+            
             if(menunumber == 5){
                 string solt;
                 int count = 0;
@@ -395,6 +459,8 @@ int main()
                 }
                 cout << endl << endl;
             }
+            
+            
             if(menunumber == 6){
                 string delivered;
                 int count = 0, stavka;
@@ -416,7 +482,7 @@ int main()
     }
     if(a == 3){
         cout << "Приветствую дорогой, Поставщик!";
-        while(1 < 2){
+        while(true){
             cout << endl << "Menu:" << endl;
             for(auto now: providermenu){
                 cout << now << endl;
@@ -429,6 +495,8 @@ int main()
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
             }
             cout << endl << "Вы выбрали пункт: " << providermenu[menunumber - 1] << endl;
+            
+            
             if(menunumber == 1){
                 string need;
                 ifstream needs("need_material.txt");
@@ -443,7 +511,9 @@ int main()
                 }
                 cout << endl << endl;
             }
-            else if(menunumber == 2){
+            
+            
+            if(menunumber == 2){
                 string need;
                 int count = 0;
                 ifstream needs("need_material.txt");
@@ -459,7 +529,9 @@ int main()
                 cout << "Количество поставляемого товара : " << count << endl;
                 cout << endl << endl;
             }
-            else if(menunumber == 3){
+            
+            
+            if(menunumber == 3){
                 int max = 0;
                 for(auto now: array1){
                     if(now.oquantity > max){
@@ -473,7 +545,9 @@ int main()
                 }
                 cout << endl << endl;
             }
-            else if(menunumber == 4){
+            
+            
+            if(menunumber == 4){
                 int min = 100;
                 for(auto now: array1){
                     if(now.oquantity < min){
@@ -487,13 +561,13 @@ int main()
                 }
                 cout << endl << endl;
             }
-            else if(menunumber == 5){
+            
+            
+            if(menunumber == 5){
                 cout << endl << "Программа завершена, мы будем рады вашему возвращению!";
                 return 0;
             }
-            else{
-                cout << "Извините но в меню только 5 пунктов, выберите один из них! " << endl;
-            }
+
         }
     }
     
